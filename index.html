@@ -21,8 +21,25 @@ body::before{
   content:"";
   position:fixed;
   inset:0;
-  background:radial-gradient(circle at top, rgba(168,85,247,0.3), #000);
-  z-index:-1;
+  background:radial-gradient(circle at top, rgba(168,85,247,0.25), #000);
+  z-index:1;
+}
+
+/* PARTICLES CANVAS */
+#particles{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:0;
+  pointer-events:none;
+}
+
+/* CONTENT */
+header, .container, #vista-dia, .discord{
+  position:relative;
+  z-index:2;
 }
 
 /* HEADER */
@@ -115,7 +132,7 @@ header{
   transform:translateY(0);
 }
 
-/* BOTON VOLVER PRO */
+/* BOTON VOLVER */
 .volver{
   display:flex;
   align-items:center;
@@ -129,15 +146,12 @@ header{
   cursor:pointer;
   transition:0.3s;
 }
-.volver img{
-  width:18px;
-}
 .volver:hover{
   background:#a855f7;
   box-shadow:0 0 20px #a855f7;
 }
 
-/* DISCORD PRO */
+/* DISCORD */
 .discord{
   position:fixed;
   bottom:20px;
@@ -151,22 +165,10 @@ header{
   border:1px solid #5865F2;
   text-decoration:none;
   color:white;
-  transition:0.3s;
-}
-.discord img{
-  width:20px;
 }
 .discord:hover{
   background:#5865F2;
   box-shadow:0 0 20px #5865F2;
-}
-
-/* PARTICULAS */
-#particles{
-  position:fixed;
-  top:0;
-  left:0;
-  z-index:-2;
 }
 
 /* CUERVO */
@@ -176,6 +178,7 @@ header{
   left:-200px;
   width:180px;
   pointer-events:none;
+  z-index:2;
   animation:vuelo 20s linear infinite;
 }
 
@@ -196,43 +199,12 @@ header{
   <div class="subtitle">HORARIOS DE PUBLICACIÓN</div>
 </header>
 
-<!-- INICIO -->
 <div class="container" id="inicio">
 
 <div class="card" onclick="mostrarDia('lunes')">
   <img src="reyhongo.png">
   <div class="preview">Rey Hongo</div>
   <h3>LUNES</h3>
-</div>
-
-<div class="card" onclick="mostrarDia('martes')">
-  <img src="img2.png">
-  <div class="preview">Próximamente</div>
-  <h3>MARTES</h3>
-</div>
-
-<div class="card" onclick="mostrarDia('miercoles')">
-  <img src="img3.png">
-  <div class="preview">Próximamente</div>
-  <h3>MIÉRCOLES</h3>
-</div>
-
-<div class="card" onclick="mostrarDia('jueves')">
-  <img src="img4.png">
-  <div class="preview">Próximamente</div>
-  <h3>JUEVES</h3>
-</div>
-
-<div class="card" onclick="mostrarDia('viernes')">
-  <img src="img5.png">
-  <div class="preview">Próximamente</div>
-  <h3>VIERNES</h3>
-</div>
-
-<div class="card" onclick="mostrarDia('sabado')">
-  <img src="img6.png">
-  <div class="preview">Próximamente</div>
-  <h3>SÁBADO</h3>
 </div>
 
 <div class="card" onclick="mostrarDia('domingo')">
@@ -243,30 +215,20 @@ header{
 
 </div>
 
-<!-- VISTA DIA -->
 <div id="vista-dia">
-  <button class="volver" onclick="volver()">
-    <img src="volver.png"> Volver
-  </button>
-
+  <button class="volver" onclick="volver()">← Volver</button>
   <h2 id="titulo" style="text-align:center;margin-bottom:20px;"></h2>
   <div class="container" id="contenido"></div>
 </div>
 
-<a class="discord" href="https://discord.gg/js8B2VgNcd" target="_blank">
-  <img src="discord.png"> Discord
-</a>
+<a class="discord" href="https://discord.gg/js8B2VgNcd" target="_blank">Discord</a>
 
 <script>
+/* DATA */
 const data={
   lunes:[
     {nombre:"Rey Hongo",img:"reyhongo.png",link:"https://manhwaweb.com/manhwa/el-ascenso-del-rey-hongo_1776286372224"}
   ],
-  martes:[],
-  miercoles:[],
-  jueves:[],
-  viernes:[],
-  sabado:[],
   domingo:[
     {nombre:"Margrave",img:"margrave.png",link:"https://manhwaweb.com/manhwa/el-mago-sin-valor-del-margrave_1776633397302"}
   ]
@@ -290,25 +252,27 @@ function mostrarDia(dia){
   });
 }
 
+/* VOLVER */
 function volver(){
   document.getElementById("inicio").style.display="grid";
   document.getElementById("vista-dia").classList.remove("active");
 }
 
-/* PARTICULAS MEJORADAS */
-const canvas=document.getElementById('particles');
-const ctx=canvas.getContext('2d');
+/* PARTICULAS NIVEL DIOS */
+const canvas=document.getElementById("particles");
+const ctx=canvas.getContext("2d");
 
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
+canvas.width=innerWidth;
+canvas.height=innerHeight;
 
 let particles=[];
-for(let i=0;i<90;i++){
+for(let i=0;i<100;i++){
   particles.push({
     x:Math.random()*canvas.width,
     y:Math.random()*canvas.height,
-    r:Math.random()*2+0.5,
-    d:Math.random()*0.4+0.1
+    vx:(Math.random()-0.5)*0.5,
+    vy:(Math.random()-0.5)*0.5,
+    r:Math.random()*2+1
   });
 }
 
@@ -316,20 +280,51 @@ function draw(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
   particles.forEach(p=>{
+    p.x+=p.vx;
+    p.y+=p.vy;
+
+    if(p.x<0||p.x>canvas.width)p.vx*=-1;
+    if(p.y<0||p.y>canvas.height)p.vy*=-1;
+
+    // glow
     ctx.beginPath();
-    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    ctx.fillStyle='rgba(168,85,247,0.5)';
+    ctx.arc(p.x,p.y,p.r*2,0,Math.PI*2);
+    ctx.fillStyle="rgba(168,85,247,0.1)";
     ctx.fill();
 
-    p.y+=p.d;
-    if(p.y>canvas.height){
-      p.y=0;
-      p.x=Math.random()*canvas.width;
-    }
+    // núcleo
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle="rgba(168,85,247,0.8)";
+    ctx.fill();
   });
+
+  // conexiones
+  for(let i=0;i<particles.length;i++){
+    for(let j=i+1;j<particles.length;j++){
+      let dx=particles[i].x-particles[j].x;
+      let dy=particles[i].y-particles[j].y;
+      let dist=Math.sqrt(dx*dx+dy*dy);
+
+      if(dist<100){
+        ctx.strokeStyle="rgba(168,85,247,0.1)";
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x,particles[i].y);
+        ctx.lineTo(particles[j].x,particles[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+
+  requestAnimationFrame(draw);
 }
 
-setInterval(draw,30);
+draw();
+
+onresize=()=>{
+  canvas.width=innerWidth;
+  canvas.height=innerHeight;
+}
 </script>
 
 </body>

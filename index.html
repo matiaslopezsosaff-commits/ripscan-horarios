@@ -11,7 +11,7 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
 
 body{
-  background: url('fondo.jpg') center/cover no-repeat fixed;
+  background:url('fondo.jpg') center/cover no-repeat fixed;
   color:white;
   overflow-x:hidden;
 }
@@ -21,60 +21,54 @@ body::before{
   content:"";
   position:fixed;
   inset:0;
-  background: radial-gradient(circle at 50% 0%, rgba(168,85,247,0.25), rgba(0,0,0,0.95));
+  background:radial-gradient(circle at top, rgba(168,85,247,0.25), #000);
   z-index:-1;
 }
 
 /* HEADER */
 header{
   text-align:center;
-  padding:50px 20px 20px;
-  animation:fadeUp 1s ease;
+  padding:40px 20px;
 }
-
 .logo-img{
-  width:260px;
-  max-width:90%;
-  display:block;
+  width:240px;
   margin:auto;
-  filter: drop-shadow(0 0 25px rgba(168,85,247,0.9));
+  display:block;
+  filter:drop-shadow(0 0 20px #a855f7);
 }
-
 .subtitle{
   opacity:0.7;
-  margin-top:15px;
-  letter-spacing:4px;
-  font-size:13px;
+  letter-spacing:3px;
 }
 
 /* GRID */
 .container{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
   gap:25px;
-  padding:30px;
-  max-width:1200px;
+  padding:20px;
+  max-width:1100px;
   margin:auto;
-  transition:0.4s;
 }
 
 /* CARD */
 .card{
   position:relative;
-  border-radius:20px;
+  border-radius:18px;
   overflow:hidden;
   cursor:pointer;
   transition:0.4s;
+  max-width:220px;
+  margin:auto;
 }
 
 .card img{
   width:100%;
-  height:260px;
+  aspect-ratio:2/3;
   object-fit:cover;
   transition:0.5s;
 }
 
-/* overlay */
 .card::after{
   content:"";
   position:absolute;
@@ -82,84 +76,108 @@ header{
   background:linear-gradient(to top, rgba(0,0,0,0.9), transparent);
 }
 
-/* borde */
-.card::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  border-radius:20px;
-  border:1px solid rgba(168,85,247,0.2);
-  z-index:2;
-}
-
-/* textos */
 .card h3{
   position:absolute;
   bottom:10px;
-  left:15px;
-  font-size:14px;
+  left:10px;
   z-index:2;
 }
 
 .preview{
   position:absolute;
   bottom:30px;
-  left:15px;
+  left:10px;
   font-size:12px;
-  z-index:2;
   background:rgba(0,0,0,0.6);
   padding:4px 8px;
   border-radius:6px;
+  z-index:2;
 }
 
 /* hover */
 .card:hover{
-  transform:translateY(-10px) scale(1.03);
+  transform:translateY(-10px) scale(1.05);
 }
 .card:hover img{
   transform:scale(1.15);
 }
-.card:hover::before{
-  border:1px solid rgba(168,85,247,0.8);
-  box-shadow:0 0 25px rgba(168,85,247,0.6);
-}
 
-/* VISTA DIA */
+/* vista dia */
 #vista-dia{
   display:none;
   opacity:0;
-  transform:translateY(30px);
+  transform:translateY(20px);
   transition:0.4s;
 }
-
 #vista-dia.active{
   display:block;
   opacity:1;
   transform:translateY(0);
 }
 
+/* BOTON VOLVER DIOS */
 .volver{
-  margin-bottom:20px;
-  padding:10px 20px;
-  border:none;
-  border-radius:10px;
-  background:#a855f7;
+  display:inline-block;
+  margin:20px;
+  padding:12px 25px;
+  border-radius:12px;
+  background:linear-gradient(90deg,#a855f7,#5865F2);
   color:white;
+  border:none;
   cursor:pointer;
+  font-weight:500;
+  transition:0.3s;
 }
 .volver:hover{
-  box-shadow:0 0 15px #a855f7;
+  box-shadow:0 0 25px #a855f7;
+  transform:scale(1.05);
 }
 
-/* animación */
-@keyframes fadeUp{
-  from{opacity:0; transform:translateY(40px);}
-  to{opacity:1; transform:translateY(0);}
+/* DISCORD */
+.discord{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:linear-gradient(90deg,#5865F2,#a855f7);
+  padding:12px 20px;
+  border-radius:12px;
+  text-decoration:none;
+  color:white;
+  transition:0.3s;
+}
+.discord:hover{
+  box-shadow:0 0 20px #a855f7;
+}
+
+/* PARTICULAS */
+#particles{
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:-2;
+}
+
+/* CUERVO */
+#cuervo{
+  position:fixed;
+  top:20%;
+  left:-200px;
+  width:180px;
+  pointer-events:none;
+  animation:vuelo 18s linear infinite;
+}
+
+@keyframes vuelo{
+  0%{left:-200px}
+  100%{left:110%}
 }
 </style>
 </head>
 
 <body>
+
+<canvas id="particles"></canvas>
+<img src="cuervo.gif" id="cuervo">
 
 <header>
   <img src="logo.png" class="logo-img">
@@ -169,72 +187,55 @@ header{
 <!-- INICIO -->
 <div class="container" id="inicio">
 
-  <div class="card" onclick="mostrarDia('lunes')">
-    <img src="reyhongo.png">
-    <div class="preview">Rey Hongo</div>
-    <h3>LUNES</h3>
-  </div>
+<div class="card" onclick="mostrarDia('lunes')">
+  <img src="reyhongo.png">
+  <div class="preview">Rey Hongo</div>
+  <h3>LUNES</h3>
+</div>
 
-  <div class="card" onclick="mostrarDia('martes')">
-    <img src="img2.png">
-    <div class="preview">Próximamente</div>
-    <h3>MARTES</h3>
-  </div>
-
-  <div class="card" onclick="mostrarDia('domingo')">
-    <img src="margrave.png">
-    <div class="preview">Margrave</div>
-    <h3>DOMINGO</h3>
-  </div>
+<div class="card" onclick="mostrarDia('domingo')">
+  <img src="margrave.png">
+  <div class="preview">Margrave</div>
+  <h3>DOMINGO</h3>
+</div>
 
 </div>
 
 <!-- VISTA DIA -->
 <div id="vista-dia">
-  <div class="container">
-    <button class="volver" onclick="volver()">← Volver</button>
-    <h2 id="titulo"></h2>
-  </div>
-
+  <button class="volver" onclick="volver()">← Volver</button>
+  <h2 id="titulo" style="text-align:center;margin-bottom:20px;"></h2>
   <div class="container" id="contenido"></div>
 </div>
 
+<a class="discord" href="https://discord.gg/js8B2VgNcd" target="_blank">Discord</a>
+
 <script>
-const data = {
-  lunes: [
-    {
-      nombre:"Rey Hongo",
-      img:"reyhongo.png",
-      link:"https://manhwaweb.com/manhwa/el-ascenso-del-rey-hongo_1776286372224"
-    }
+const data={
+  lunes:[
+    {nombre:"Rey Hongo",img:"reyhongo.png",link:"https://manhwaweb.com/manhwa/el-ascenso-del-rey-hongo_1776286372224"}
   ],
-  domingo: [
-    {
-      nombre:"El Mago del Margrave",
-      img:"margrave.png",
-      link:"https://manhwaweb.com/manhwa/el-mago-sin-valor-del-margrave_1776633397302"
-    }
+  domingo:[
+    {nombre:"Margrave",img:"margrave.png",link:"https://manhwaweb.com/manhwa/el-mago-sin-valor-del-margrave_1776633397302"}
   ]
 };
 
 function mostrarDia(dia){
   document.getElementById("inicio").style.display="none";
-  const vista = document.getElementById("vista-dia");
+  const vista=document.getElementById("vista-dia");
   vista.classList.add("active");
+  document.getElementById("titulo").innerText=dia.toUpperCase();
 
-  document.getElementById("titulo").innerText = dia.toUpperCase();
-
-  const cont = document.getElementById("contenido");
+  const cont=document.getElementById("contenido");
   cont.innerHTML="";
 
   data[dia].forEach(m=>{
-    cont.innerHTML += `
-      <div class="card">
-        <img src="${m.img}">
-        <h3>${m.nombre}</h3>
-        <a href="${m.link}" target="_blank" style="position:absolute;inset:0;"></a>
-      </div>
-    `;
+    cont.innerHTML+=`
+    <div class="card">
+      <img src="${m.img}">
+      <h3>${m.nombre}</h3>
+      <a href="${m.link}" target="_blank" style="position:absolute;inset:0;"></a>
+    </div>`;
   });
 }
 
@@ -242,6 +243,39 @@ function volver(){
   document.getElementById("inicio").style.display="grid";
   document.getElementById("vista-dia").classList.remove("active");
 }
+
+/* PARTICULAS */
+const canvas=document.getElementById('particles');
+const ctx=canvas.getContext('2d');
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let particles=[];
+for(let i=0;i<70;i++){
+  particles.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    r:Math.random()*2+1,
+    d:Math.random()*0.5
+  });
+}
+
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle='rgba(168,85,247,0.6)';
+  particles.forEach(p=>{
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fill();
+    p.y+=p.d;
+    if(p.y>canvas.height){
+      p.y=0;
+      p.x=Math.random()*canvas.width;
+    }
+  });
+}
+setInterval(draw,30);
 </script>
 
 </body>

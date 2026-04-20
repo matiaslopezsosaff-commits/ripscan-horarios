@@ -13,6 +13,7 @@
 body{
   background: url('fondo.jpg') center/cover no-repeat fixed;
   color:white;
+  overflow-x:hidden;
 }
 
 /* overlay */
@@ -28,9 +29,7 @@ body::before{
 header{
   text-align:center;
   padding:50px 20px 20px;
-  opacity:0;
-  transform:translateY(40px);
-  animation:fadeUp 1s ease forwards;
+  animation:fadeUp 1s ease;
 }
 
 .logo-img{
@@ -56,6 +55,7 @@ header{
   padding:30px;
   max-width:1200px;
   margin:auto;
+  transition:0.4s;
 }
 
 /* CARD */
@@ -65,20 +65,8 @@ header{
   overflow:hidden;
   cursor:pointer;
   transition:0.4s;
-  opacity:0;
-  transform:translateY(40px);
-  animation:fadeUp 1s ease forwards;
 }
 
-.card:nth-child(1){animation-delay:0.2s}
-.card:nth-child(2){animation-delay:0.3s}
-.card:nth-child(3){animation-delay:0.4s}
-.card:nth-child(4){animation-delay:0.5s}
-.card:nth-child(5){animation-delay:0.6s}
-.card:nth-child(6){animation-delay:0.7s}
-.card:nth-child(7){animation-delay:0.8s}
-
-/* imagen */
 .card img{
   width:100%;
   height:260px;
@@ -94,16 +82,6 @@ header{
   background:linear-gradient(to top, rgba(0,0,0,0.9), transparent);
 }
 
-/* texto */
-.card h3{
-  position:absolute;
-  bottom:10px;
-  left:15px;
-  font-size:14px;
-  letter-spacing:2px;
-  z-index:2;
-}
-
 /* borde */
 .card::before{
   content:"";
@@ -114,194 +92,156 @@ header{
   z-index:2;
 }
 
+/* textos */
+.card h3{
+  position:absolute;
+  bottom:10px;
+  left:15px;
+  font-size:14px;
+  z-index:2;
+}
+
+.preview{
+  position:absolute;
+  bottom:30px;
+  left:15px;
+  font-size:12px;
+  z-index:2;
+  background:rgba(0,0,0,0.6);
+  padding:4px 8px;
+  border-radius:6px;
+}
+
 /* hover */
 .card:hover{
   transform:translateY(-10px) scale(1.03);
 }
-
 .card:hover img{
   transform:scale(1.15);
 }
-
 .card:hover::before{
   border:1px solid rgba(168,85,247,0.8);
   box-shadow:0 0 25px rgba(168,85,247,0.6);
 }
 
-/* link full */
-.card a{
-  position:absolute;
-  inset:0;
-  z-index:3;
-}
-
-/* footer */
-footer{
-  text-align:center;
-  padding:40px 20px;
+/* VISTA DIA */
+#vista-dia{
+  display:none;
   opacity:0;
-  transform:translateY(40px);
-  animation:fadeUp 1s ease forwards;
-  animation-delay:1s;
+  transform:translateY(30px);
+  transition:0.4s;
 }
 
-.discord{
-  display:inline-block;
-  padding:14px 30px;
-  border-radius:14px;
-  background:linear-gradient(90deg,#5865F2,#a855f7);
+#vista-dia.active{
+  display:block;
+  opacity:1;
+  transform:translateY(0);
+}
+
+.volver{
+  margin-bottom:20px;
+  padding:10px 20px;
+  border:none;
+  border-radius:10px;
+  background:#a855f7;
   color:white;
-  text-decoration:none;
-  transition:0.3s;
+  cursor:pointer;
 }
-
-.discord:hover{
-  box-shadow:0 0 25px #a855f7;
-  transform:scale(1.05);
+.volver:hover{
+  box-shadow:0 0 15px #a855f7;
 }
 
 /* animación */
 @keyframes fadeUp{
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
-}
-
-/* PARTICULAS */
-#particles{
-  position:fixed;
-  top:0;
-  left:0;
-  z-index:-2;
-}
-
-/* CUERVO */
-#cuervo{
-  position:fixed;
-  top:20%;
-  left:-200px;
-  width:90px;
-  opacity:0.9;
-  pointer-events:none;
-  filter: drop-shadow(0 0 10px rgba(168,85,247,0.7));
-  animation:vuelo 15s linear infinite;
-}
-
-@keyframes vuelo{
-  0%{left:-200px; transform:translateY(0)}
-  50%{transform:translateY(-40px)}
-  100%{left:110%; transform:translateY(0)}
+  from{opacity:0; transform:translateY(40px);}
+  to{opacity:1; transform:translateY(0);}
 }
 </style>
 </head>
 
 <body>
 
-<canvas id="particles"></canvas>
-<img src="cuervo.gif" id="cuervo">
-
 <header>
   <img src="logo.png" class="logo-img">
   <div class="subtitle">HORARIOS DE PUBLICACIÓN</div>
 </header>
 
-<div class="container">
+<!-- INICIO -->
+<div class="container" id="inicio">
 
-<div class="card">
-  <img src="reyhongo.png">
-  <h3>LUNES</h3>
-  <a href="lunes.html" target="_blank"></a>
-</div>
+  <div class="card" onclick="mostrarDia('lunes')">
+    <img src="reyhongo.png">
+    <div class="preview">Rey Hongo</div>
+    <h3>LUNES</h3>
+  </div>
 
-<div class="card">
-  <img src="img2.png">
-  <h3>MARTES</h3>
-  <a href="#"></a>
-</div>
+  <div class="card" onclick="mostrarDia('martes')">
+    <img src="img2.png">
+    <div class="preview">Próximamente</div>
+    <h3>MARTES</h3>
+  </div>
 
-<div class="card">
-  <img src="img3.png">
-  <h3>MIÉRCOLES</h3>
-  <a href="#"></a>
-</div>
-
-<div class="card">
-  <img src="img4.png">
-  <h3>JUEVES</h3>
-  <a href="#"></a>
-</div>
-
-<div class="card">
-  <img src="img5.png">
-  <h3>VIERNES</h3>
-  <a href="#"></a>
-</div>
-
-<div class="card">
-  <img src="img6.png">
-  <h3>SÁBADO</h3>
-  <a href="#"></a>
-</div>
-
-<div class="card">
-  <img src="margrave.png">
-  <h3>DOMINGO</h3>
-  <a href="https://manhwaweb.com/manhwa/el-mago-sin-valor-del-margrave_1776633397302" target="_blank"></a>
-</div>
+  <div class="card" onclick="mostrarDia('domingo')">
+    <img src="margrave.png">
+    <div class="preview">Margrave</div>
+    <h3>DOMINGO</h3>
+  </div>
 
 </div>
 
-<footer>
-  <a class="discord" href="https://discord.gg/js8B2VgNcd" target="_blank">
-    Unirse al Discord
-  </a>
-</footer>
+<!-- VISTA DIA -->
+<div id="vista-dia">
+  <div class="container">
+    <button class="volver" onclick="volver()">← Volver</button>
+    <h2 id="titulo"></h2>
+  </div>
+
+  <div class="container" id="contenido"></div>
+</div>
 
 <script>
-const canvas = document.getElementById('particles');
-const ctx = canvas.getContext('2d');
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-let particles = [];
-
-for(let i=0;i<80;i++){
-  particles.push({
-    x: Math.random()*canvas.width,
-    y: Math.random()*canvas.height,
-    r: Math.random()*2+1,
-    d: Math.random()*0.5+0.2
-  });
-}
-
-function draw(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-
-  ctx.fillStyle='rgba(168,85,247,0.6)';
-
-  particles.forEach(p=>{
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    ctx.fill();
-  });
-
-  particles.forEach(p=>{
-    p.y+=p.d;
-    if(p.y>canvas.height){
-      p.y=0;
-      p.x=Math.random()*canvas.width;
+const data = {
+  lunes: [
+    {
+      nombre:"Rey Hongo",
+      img:"reyhongo.png",
+      link:"https://manhwaweb.com/manhwa/el-ascenso-del-rey-hongo_1776286372224"
     }
+  ],
+  domingo: [
+    {
+      nombre:"El Mago del Margrave",
+      img:"margrave.png",
+      link:"https://manhwaweb.com/manhwa/el-mago-sin-valor-del-margrave_1776633397302"
+    }
+  ]
+};
+
+function mostrarDia(dia){
+  document.getElementById("inicio").style.display="none";
+  const vista = document.getElementById("vista-dia");
+  vista.classList.add("active");
+
+  document.getElementById("titulo").innerText = dia.toUpperCase();
+
+  const cont = document.getElementById("contenido");
+  cont.innerHTML="";
+
+  data[dia].forEach(m=>{
+    cont.innerHTML += `
+      <div class="card">
+        <img src="${m.img}">
+        <h3>${m.nombre}</h3>
+        <a href="${m.link}" target="_blank" style="position:absolute;inset:0;"></a>
+      </div>
+    `;
   });
 }
 
-setInterval(draw,30);
-
-window.addEventListener('resize',()=>{
-  canvas.width=window.innerWidth;
-  canvas.height=window.innerHeight;
-});
+function volver(){
+  document.getElementById("inicio").style.display="grid";
+  document.getElementById("vista-dia").classList.remove("active");
+}
 </script>
 
 </body>

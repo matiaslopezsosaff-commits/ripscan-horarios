@@ -8,46 +8,63 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
 body{
-  background: radial-gradient(circle at top, #1a0033, #000);
+  background: radial-gradient(circle at top, #140028, #000);
   color:white;
   overflow-x:hidden;
+}
+canvas{
+  position:fixed;
+  top:0;left:0;
+  z-index:-1;
 }
 header{
   text-align:center;
   padding:40px 20px;
 }
 .logo{
-  font-size:60px;
+  font-size:70px;
   font-weight:700;
   background: linear-gradient(90deg,#fff,#a855f7);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
+  text-shadow:0 0 20px rgba(168,85,247,0.6);
 }
 .subtitle{
   opacity:0.7;
   margin-top:10px;
-  letter-spacing:2px;
+  letter-spacing:3px;
 }
 .container{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
   gap:20px;
   padding:20px;
   max-width:1200px;
   margin:auto;
 }
 .card{
-  background:rgba(255,255,255,0.05);
+  background:rgba(255,255,255,0.04);
   border:1px solid rgba(168,85,247,0.3);
-  border-radius:15px;
+  border-radius:18px;
   padding:10px;
   text-align:center;
-  transition:0.3s;
-  backdrop-filter:blur(10px);
+  transition:0.4s;
+  backdrop-filter:blur(12px);
+  position:relative;
+  overflow:hidden;
 }
+.card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle,rgba(168,85,247,0.4),transparent);
+  opacity:0;
+  transition:0.4s;
+}
+.card:hover::before{opacity:1}
 .card:hover{
-  transform:translateY(-8px) scale(1.03);
-  box-shadow:0 0 20px rgba(168,85,247,0.5);
+  transform:translateY(-10px) scale(1.05);
+  box-shadow:0 0 25px rgba(168,85,247,0.7);
 }
 .card h3{
   margin-bottom:10px;
@@ -57,7 +74,7 @@ header{
 }
 .card img{
   width:100%;
-  border-radius:10px;
+  border-radius:12px;
 }
 footer{
   text-align:center;
@@ -66,19 +83,33 @@ footer{
 }
 .discord{
   display:inline-block;
-  padding:10px 20px;
-  border-radius:10px;
+  padding:12px 25px;
+  border-radius:12px;
   background:linear-gradient(90deg,#5865F2,#a855f7);
   color:white;
   text-decoration:none;
   transition:0.3s;
 }
 .discord:hover{
-  opacity:0.8;
+  box-shadow:0 0 20px #a855f7;
+}
+.panel{
+  position:fixed;
+  top:10px;
+  right:10px;
+  background:rgba(0,0,0,0.7);
+  padding:10px;
+  border-radius:10px;
+  font-size:12px;
+}
+.panel input{
+  width:120px;
+  margin:3px;
 }
 </style>
 </head>
 <body>
+<canvas id="particles"></canvas>
 
 <header>
   <div class="logo">RIPSCAN</div>
@@ -86,42 +117,56 @@ footer{
 </header>
 
 <div class="container">
-
-  <div class="card">
-    <h3>LUNES</h3>
-    <img src="reyhongo.png">
-  </div>
-
-  <div class="card">
-    <h3>MARTES</h3>
-  </div>
-
-  <div class="card">
-    <h3>MIÉRCOLES</h3>
-  </div>
-
-  <div class="card">
-    <h3>JUEVES</h3>
-  </div>
-
-  <div class="card">
-    <h3>VIERNES</h3>
-  </div>
-
-  <div class="card">
-    <h3>SÁBADO</h3>
-  </div>
-
-  <div class="card">
-    <h3>DOMINGO</h3>
-    <img src="margrave.png">
-  </div>
-
+  <div class="card"><h3>LUNES</h3><a href="#"><img id="img-lunes" src="reyhongo.png"></a></div>
+  <div class="card"><h3>MARTES</h3><a href="#"><img id="img-martes"></a></div>
+  <div class="card"><h3>MIÉRCOLES</h3><a href="#"><img id="img-miercoles"></a></div>
+  <div class="card"><h3>JUEVES</h3><a href="#"><img id="img-jueves"></a></div>
+  <div class="card"><h3>VIERNES</h3><a href="#"><img id="img-viernes"></a></div>
+  <div class="card"><h3>SÁBADO</h3><a href="#"><img id="img-sabado"></a></div>
+  <div class="card"><h3>DOMINGO</h3><a href="#"><img id="img-domingo" src="margrave.png"></a></div>
 </div>
 
 <footer>
   <a class="discord" href="https://discord.gg/js8B2VgNcd" target="_blank">Unirse al Discord</a>
 </footer>
+
+<!-- PANEL SIMPLE -->
+<div class="panel">
+  <div>Editar imagen (URL)</div>
+  <input placeholder="lunes" onchange="setImg('img-lunes',this.value)">
+  <input placeholder="domingo" onchange="setImg('img-domingo',this.value)">
+</div>
+
+<script>
+function setImg(id,url){document.getElementById(id).src=url}
+
+// partículas
+const canvas=document.getElementById('particles');
+const ctx=canvas.getContext('2d');
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+let particles=[];
+for(let i=0;i<60;i++){
+  particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2+1,d:Math.random()*1});
+}
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle='rgba(168,85,247,0.7)';
+  particles.forEach(p=>{
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fill();
+  });
+  update();
+}
+function update(){
+  particles.forEach(p=>{
+    p.y+=p.d;
+    if(p.y>canvas.height){p.y=0;p.x=Math.random()*canvas.width}
+  });
+}
+setInterval(draw,30);
+</script>
 
 </body>
 </html>

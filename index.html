@@ -16,14 +16,15 @@ body{
   overflow-x:hidden;
 }
 
-/* 🌌 FONDO ANIME (niebla animada) */
+/* FONDO ANIME */
 body::before{
   content:"";
   position:fixed;
   inset:0;
-  background:radial-gradient(circle at 20% 30%, rgba(168,85,247,0.2), transparent),
-             radial-gradient(circle at 80% 70%, rgba(88,101,242,0.2), transparent);
-  animation:fondoMove 10s infinite alternate ease-in-out;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(168,85,247,0.2), transparent),
+    radial-gradient(circle at 80% 70%, rgba(88,101,242,0.2), transparent);
+  animation:fondoMove 12s infinite alternate ease-in-out;
   z-index:1;
 }
 
@@ -32,7 +33,7 @@ body::before{
   100%{transform:scale(1.2) translate(-20px,20px);}
 }
 
-/* partículas */
+/* PARTICULAS */
 #particles{
   position:fixed;
   inset:0;
@@ -40,18 +41,18 @@ body::before{
   pointer-events:none;
 }
 
-/* contenido */
+/* CONTENIDO */
 header,.container,#vista-dia,.discord{
   position:relative;
   z-index:2;
 }
 
-/* header */
+/* HEADER */
 header{text-align:center;padding:40px}
 .logo-img{width:240px;filter:drop-shadow(0 0 25px #a855f7)}
 .subtitle{opacity:0.7;letter-spacing:3px}
 
-/* grid */
+/* GRID */
 .container{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
@@ -61,7 +62,7 @@ header{text-align:center;padding:40px}
   margin:auto;
 }
 
-/* cards */
+/* CARD */
 .card{
   position:relative;
   border-radius:18px;
@@ -94,39 +95,60 @@ header{text-align:center;padding:40px}
   border-radius:6px;
   z-index:2;
 }
+
+/* HOVER */
 .card:hover{transform:translateY(-10px) scale(1.05)}
 .card:hover img{transform:scale(1.15)}
 
-/* vista */
+/* VISTA DIA */
 #vista-dia{display:none;opacity:0;transition:0.4s}
 #vista-dia.active{display:block;opacity:1}
 
-/* volver */
+/* BOTON VOLVER */
 .volver{
-  display:flex;align-items:center;gap:8px;
-  margin:20px;padding:10px 18px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:20px;
+  padding:10px 18px;
   border-radius:12px;
   background:rgba(0,0,0,0.6);
   border:1px solid #a855f7;
+  color:white;
   cursor:pointer;
 }
-.volver:hover{background:#a855f7;box-shadow:0 0 20px #a855f7}
+.volver:hover{
+  background:#a855f7;
+  box-shadow:0 0 20px #a855f7;
+}
 
-/* discord */
+/* DISCORD */
 .discord{
-  position:fixed;bottom:20px;right:20px;
-  display:flex;align-items:center;gap:8px;
-  padding:10px 18px;border-radius:12px;
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 18px;
+  border-radius:12px;
   background:rgba(0,0,0,0.6);
   border:1px solid #5865F2;
-  text-decoration:none;color:white;
+  text-decoration:none;
+  color:white;
 }
-.discord:hover{background:#5865F2;box-shadow:0 0 20px #5865F2}
+.discord:hover{
+  background:#5865F2;
+  box-shadow:0 0 20px #5865F2;
+}
 
-/* cuervo */
+/* CUERVO */
 #cuervo{
-  position:fixed;top:20%;left:-200px;
-  width:180px;z-index:2;
+  position:fixed;
+  top:20%;
+  left:-200px;
+  width:180px;
+  z-index:2;
   animation:vuelo 20s linear infinite;
 }
 @keyframes vuelo{
@@ -146,7 +168,7 @@ header{text-align:center;padding:40px}
   <div class="subtitle">HORARIOS DE PUBLICACIÓN</div>
 </header>
 
-<!-- TODOS LOS DÍAS -->
+<!-- INICIO -->
 <div class="container" id="inicio">
 
 <div class="card" onclick="mostrarDia('lunes')"><img src="reyhongo.png"><div class="preview">Rey Hongo</div><h3>LUNES</h3></div>
@@ -159,11 +181,12 @@ header{text-align:center;padding:40px}
 
 </div>
 
-<!-- VISTA -->
+<!-- VISTA DIA -->
 <div id="vista-dia">
   <button class="volver" onclick="volver()">
     <img src="volver.png" width="18"> Volver
   </button>
+
   <h2 id="titulo" style="text-align:center;margin-bottom:20px;"></h2>
   <div class="container" id="contenido"></div>
 </div>
@@ -184,10 +207,21 @@ const data={
 };
 
 function mostrarDia(dia){
+  const inicio=document.getElementById("inicio");
+  const vista=document.getElementById("vista-dia");
+  const titulo=document.getElementById("titulo");
+  const contenido=document.getElementById("contenido");
+
   inicio.style.display="none";
-  vista-dia.classList.add("active");
+  vista.classList.add("active");
+
   titulo.innerText=dia.toUpperCase();
   contenido.innerHTML="";
+
+  if(data[dia].length===0){
+    contenido.innerHTML="<p style='text-align:center;opacity:0.6;'>No hay manhwas todavía</p>";
+    return;
+  }
 
   data[dia].forEach(m=>{
     contenido.innerHTML+=`
@@ -200,19 +234,25 @@ function mostrarDia(dia){
 }
 
 function volver(){
-  inicio.style.display="grid";
-  vista-dia.classList.remove("active");
+  document.getElementById("inicio").style.display="grid";
+  document.getElementById("vista-dia").classList.remove("active");
 }
 
-/* partículas GOD */
+/* PARTICULAS NIVEL DIOS */
 const canvas=document.getElementById("particles");
 const ctx=canvas.getContext("2d");
+
 canvas.width=innerWidth;
 canvas.height=innerHeight;
 
 let p=[];
 for(let i=0;i<100;i++){
-  p.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-0.5),vy:(Math.random()-0.5)});
+  p.push({
+    x:Math.random()*innerWidth,
+    y:Math.random()*innerHeight,
+    vx:(Math.random()-0.5),
+    vy:(Math.random()-0.5)
+  });
 }
 
 function draw(){

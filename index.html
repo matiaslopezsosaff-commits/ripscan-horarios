@@ -16,49 +16,42 @@ body{
   overflow-x:hidden;
 }
 
-/* overlay */
+/* 🌌 FONDO ANIME (niebla animada) */
 body::before{
   content:"";
   position:fixed;
   inset:0;
-  background:radial-gradient(circle at top, rgba(168,85,247,0.25), #000);
+  background:radial-gradient(circle at 20% 30%, rgba(168,85,247,0.2), transparent),
+             radial-gradient(circle at 80% 70%, rgba(88,101,242,0.2), transparent);
+  animation:fondoMove 10s infinite alternate ease-in-out;
   z-index:1;
 }
 
-/* PARTICLES CANVAS */
+@keyframes fondoMove{
+  0%{transform:scale(1) translate(0,0);}
+  100%{transform:scale(1.2) translate(-20px,20px);}
+}
+
+/* partículas */
 #particles{
   position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
+  inset:0;
   z-index:0;
   pointer-events:none;
 }
 
-/* CONTENT */
-header, .container, #vista-dia, .discord{
+/* contenido */
+header,.container,#vista-dia,.discord{
   position:relative;
   z-index:2;
 }
 
-/* HEADER */
-header{
-  text-align:center;
-  padding:40px 20px;
-}
-.logo-img{
-  width:240px;
-  margin:auto;
-  display:block;
-  filter:drop-shadow(0 0 25px #a855f7);
-}
-.subtitle{
-  opacity:0.7;
-  letter-spacing:3px;
-}
+/* header */
+header{text-align:center;padding:40px}
+.logo-img{width:240px;filter:drop-shadow(0 0 25px #a855f7)}
+.subtitle{opacity:0.7;letter-spacing:3px}
 
-/* GRID */
+/* grid */
 .container{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
@@ -68,7 +61,7 @@ header{
   margin:auto;
 }
 
-/* CARD */
+/* cards */
 .card{
   position:relative;
   border-radius:18px;
@@ -78,28 +71,19 @@ header{
   max-width:220px;
   margin:auto;
 }
-
 .card img{
   width:100%;
   aspect-ratio:2/3;
   object-fit:cover;
   transition:0.5s;
 }
-
 .card::after{
   content:"";
   position:absolute;
   inset:0;
-  background:linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+  background:linear-gradient(to top,rgba(0,0,0,0.9),transparent);
 }
-
-.card h3{
-  position:absolute;
-  bottom:10px;
-  left:10px;
-  z-index:2;
-}
-
+.card h3{position:absolute;bottom:10px;left:10px;z-index:2}
 .preview{
   position:absolute;
   bottom:30px;
@@ -110,78 +94,41 @@ header{
   border-radius:6px;
   z-index:2;
 }
+.card:hover{transform:translateY(-10px) scale(1.05)}
+.card:hover img{transform:scale(1.15)}
 
-/* hover */
-.card:hover{
-  transform:translateY(-10px) scale(1.05);
-}
-.card:hover img{
-  transform:scale(1.15);
-}
+/* vista */
+#vista-dia{display:none;opacity:0;transition:0.4s}
+#vista-dia.active{display:block;opacity:1}
 
-/* vista dia */
-#vista-dia{
-  display:none;
-  opacity:0;
-  transform:translateY(20px);
-  transition:0.4s;
-}
-#vista-dia.active{
-  display:block;
-  opacity:1;
-  transform:translateY(0);
-}
-
-/* BOTON VOLVER */
+/* volver */
 .volver{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  margin:20px;
-  padding:10px 18px;
+  display:flex;align-items:center;gap:8px;
+  margin:20px;padding:10px 18px;
   border-radius:12px;
   background:rgba(0,0,0,0.6);
-  border:1px solid rgba(168,85,247,0.5);
-  color:white;
+  border:1px solid #a855f7;
   cursor:pointer;
-  transition:0.3s;
 }
-.volver:hover{
-  background:#a855f7;
-  box-shadow:0 0 20px #a855f7;
-}
+.volver:hover{background:#a855f7;box-shadow:0 0 20px #a855f7}
 
-/* DISCORD */
+/* discord */
 .discord{
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  display:flex;
-  align-items:center;
-  gap:8px;
-  padding:10px 18px;
-  border-radius:12px;
+  position:fixed;bottom:20px;right:20px;
+  display:flex;align-items:center;gap:8px;
+  padding:10px 18px;border-radius:12px;
   background:rgba(0,0,0,0.6);
   border:1px solid #5865F2;
-  text-decoration:none;
-  color:white;
+  text-decoration:none;color:white;
 }
-.discord:hover{
-  background:#5865F2;
-  box-shadow:0 0 20px #5865F2;
-}
+.discord:hover{background:#5865F2;box-shadow:0 0 20px #5865F2}
 
-/* CUERVO */
+/* cuervo */
 #cuervo{
-  position:fixed;
-  top:20%;
-  left:-200px;
-  width:180px;
-  pointer-events:none;
-  z-index:2;
+  position:fixed;top:20%;left:-200px;
+  width:180px;z-index:2;
   animation:vuelo 20s linear infinite;
 }
-
 @keyframes vuelo{
   0%{left:-200px}
   100%{left:110%}
@@ -199,51 +146,51 @@ header{
   <div class="subtitle">HORARIOS DE PUBLICACIÓN</div>
 </header>
 
+<!-- TODOS LOS DÍAS -->
 <div class="container" id="inicio">
 
-<div class="card" onclick="mostrarDia('lunes')">
-  <img src="reyhongo.png">
-  <div class="preview">Rey Hongo</div>
-  <h3>LUNES</h3>
-</div>
-
-<div class="card" onclick="mostrarDia('domingo')">
-  <img src="margrave.png">
-  <div class="preview">Margrave</div>
-  <h3>DOMINGO</h3>
-</div>
+<div class="card" onclick="mostrarDia('lunes')"><img src="reyhongo.png"><div class="preview">Rey Hongo</div><h3>LUNES</h3></div>
+<div class="card" onclick="mostrarDia('martes')"><img src="img2.png"><div class="preview">Próximamente</div><h3>MARTES</h3></div>
+<div class="card" onclick="mostrarDia('miercoles')"><img src="img3.png"><div class="preview">Próximamente</div><h3>MIÉRCOLES</h3></div>
+<div class="card" onclick="mostrarDia('jueves')"><img src="img4.png"><div class="preview">Próximamente</div><h3>JUEVES</h3></div>
+<div class="card" onclick="mostrarDia('viernes')"><img src="img5.png"><div class="preview">Próximamente</div><h3>VIERNES</h3></div>
+<div class="card" onclick="mostrarDia('sabado')"><img src="img6.png"><div class="preview">Próximamente</div><h3>SÁBADO</h3></div>
+<div class="card" onclick="mostrarDia('domingo')"><img src="margrave.png"><div class="preview">Margrave</div><h3>DOMINGO</h3></div>
 
 </div>
 
+<!-- VISTA -->
 <div id="vista-dia">
-  <button class="volver" onclick="volver()">← Volver</button>
+  <button class="volver" onclick="volver()">
+    <img src="volver.png" width="18"> Volver
+  </button>
   <h2 id="titulo" style="text-align:center;margin-bottom:20px;"></h2>
   <div class="container" id="contenido"></div>
 </div>
 
-<a class="discord" href="https://discord.gg/js8B2VgNcd" target="_blank">Discord</a>
+<a class="discord" href="https://discord.gg/js8B2VgNcd" target="_blank">
+  <img src="discord.png" width="20"> Discord
+</a>
 
 <script>
-/* DATA */
 const data={
-  lunes:[
-    {nombre:"Rey Hongo",img:"reyhongo.png",link:"https://manhwaweb.com/manhwa/el-ascenso-del-rey-hongo_1776286372224"}
-  ],
-  domingo:[
-    {nombre:"Margrave",img:"margrave.png",link:"https://manhwaweb.com/manhwa/el-mago-sin-valor-del-margrave_1776633397302"}
-  ]
+  lunes:[{nombre:"Rey Hongo",img:"reyhongo.png",link:"https://manhwaweb.com"}],
+  martes:[],
+  miercoles:[],
+  jueves:[],
+  viernes:[],
+  sabado:[],
+  domingo:[{nombre:"Margrave",img:"margrave.png",link:"https://manhwaweb.com"}]
 };
 
 function mostrarDia(dia){
-  document.getElementById("inicio").style.display="none";
-  document.getElementById("vista-dia").classList.add("active");
-  document.getElementById("titulo").innerText=dia.toUpperCase();
-
-  const cont=document.getElementById("contenido");
-  cont.innerHTML="";
+  inicio.style.display="none";
+  vista-dia.classList.add("active");
+  titulo.innerText=dia.toUpperCase();
+  contenido.innerHTML="";
 
   data[dia].forEach(m=>{
-    cont.innerHTML+=`
+    contenido.innerHTML+=`
     <div class="card">
       <img src="${m.img}">
       <h3>${m.nombre}</h3>
@@ -252,79 +199,38 @@ function mostrarDia(dia){
   });
 }
 
-/* VOLVER */
 function volver(){
-  document.getElementById("inicio").style.display="grid";
-  document.getElementById("vista-dia").classList.remove("active");
+  inicio.style.display="grid";
+  vista-dia.classList.remove("active");
 }
 
-/* PARTICULAS NIVEL DIOS */
+/* partículas GOD */
 const canvas=document.getElementById("particles");
 const ctx=canvas.getContext("2d");
-
 canvas.width=innerWidth;
 canvas.height=innerHeight;
 
-let particles=[];
+let p=[];
 for(let i=0;i<100;i++){
-  particles.push({
-    x:Math.random()*canvas.width,
-    y:Math.random()*canvas.height,
-    vx:(Math.random()-0.5)*0.5,
-    vy:(Math.random()-0.5)*0.5,
-    r:Math.random()*2+1
-  });
+  p.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-0.5),vy:(Math.random()-0.5)});
 }
 
 function draw(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  particles.forEach(p=>{
-    p.x+=p.vx;
-    p.y+=p.vy;
+  p.forEach(a=>{
+    a.x+=a.vx;
+    a.y+=a.vy;
 
-    if(p.x<0||p.x>canvas.width)p.vx*=-1;
-    if(p.y<0||p.y>canvas.height)p.vy*=-1;
-
-    // glow
     ctx.beginPath();
-    ctx.arc(p.x,p.y,p.r*2,0,Math.PI*2);
-    ctx.fillStyle="rgba(168,85,247,0.1)";
-    ctx.fill();
-
-    // núcleo
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.arc(a.x,a.y,2,0,Math.PI*2);
     ctx.fillStyle="rgba(168,85,247,0.8)";
     ctx.fill();
   });
 
-  // conexiones
-  for(let i=0;i<particles.length;i++){
-    for(let j=i+1;j<particles.length;j++){
-      let dx=particles[i].x-particles[j].x;
-      let dy=particles[i].y-particles[j].y;
-      let dist=Math.sqrt(dx*dx+dy*dy);
-
-      if(dist<100){
-        ctx.strokeStyle="rgba(168,85,247,0.1)";
-        ctx.beginPath();
-        ctx.moveTo(particles[i].x,particles[i].y);
-        ctx.lineTo(particles[j].x,particles[j].y);
-        ctx.stroke();
-      }
-    }
-  }
-
   requestAnimationFrame(draw);
 }
-
 draw();
-
-onresize=()=>{
-  canvas.width=innerWidth;
-  canvas.height=innerHeight;
-}
 </script>
 
 </body>
